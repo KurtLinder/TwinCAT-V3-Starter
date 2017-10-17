@@ -1,0 +1,42 @@
+﻿<Window x:Class="TwinCAT_V3_Starter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TwinCAT_V3_Starter"
+        mc:Ignorable="d"
+        Title="TwinCAT V3 Starter" Height="800" Width="1024">
+    <Grid>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="740" Margin="10,10,0,0" VerticalAlignment="Top" Width="990" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Header="PLC"  FontSize="14">
+                <Grid x:Name="Tab_PLC_NONE_NONE" Background="#FFE5E5E5">
+                    <StackPanel x:Name="StackPanel_PLC_NONE_NONE" HorizontalAlignment="Left" Height="500" Margin="10,10,0,0" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="2"/>
+                    <WebBrowser x:Name="Web_PLC_NONE_NONE" HorizontalAlignment="Left" Height="652" Margin="240,50,0,0" VerticalAlignment="Top" Width="734"/>
+                    <Button x:Name="ProjektStarten_PLC_NONE_NONE" Content="Projekt starten" HorizontalAlignment="Left" Height="30" Margin="240,10,0,0" VerticalAlignment="Top" Width="734" IsEnabled="False" Click="ProjektStarten" FontSize="16"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="PLC + Visu" FontSize="14">
+                <Grid x:Name="Tab_PLC_VISU_NONE" Background="#FFE5E5E5">
+                    <StackPanel x:Name="StackPanel_PLC_VISU_NONE" HorizontalAlignment="Left" Height="500" Margin="10,10,0,0" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="5"/>
+                    <WebBrowser x:Name="Web_PLC_VISU_NONE" HorizontalAlignment="Left" Height="652" Margin="240,50,0,0" VerticalAlignment="Top" Width="734" Grid.Column="4"/>
+                    <Button x:Name="ProjektStarten_PLC_VISU_NONE" Content="Projekt starten" HorizontalAlignment="Left" Height="30" Margin="240,10,0,0" VerticalAlignment="Top" Width="734" IsEnabled="False" Click="ProjektStarten" FontSize="16"/>
+                </Grid>
+            </TabItem>
+            <TabItem  Header="PLC + NC" FontSize="14">
+                <Grid x:Name="Tab_PLC_NONE_NC" Background="#FFE5E5E5">
+                    <StackPanel x:Name="StackPanel_PLC_NONE_NC" HorizontalAlignment="Left" Height="500" Margin="10,10,0,0" VerticalAlignment="Top" Width="400"/>
+                    <WebBrowser x:Name="Web_PLC_NONE_NC" HorizontalAlignment="Left" Height="652" Margin="240,50,0,0" VerticalAlignment="Top" Width="734"/>
+                    <Button x:Name="ProjektStarten_PLC_NONE_NC" Content="Projekt starten" HorizontalAlignment="Left" Height="30" Margin="240,10,0,0" VerticalAlignment="Top" Width="734" IsEnabled="False" Click="ProjektStarten" FontSize="16"/>
+                </Grid>
+            </TabItem>
+            <TabItem  Header="Bugs" FontSize="14">
+                <Grid x:Name="Tab_BUG_NONE_NONE" Background="#FFE5E5E5">
+                    <StackPanel x:Name="StackPanel_BUG_NONE_NONE" HorizontalAlignment="Left" Height="500" Margin="10,10,0,0" VerticalAlignment="Top" Width="400"/>
+                    <WebBrowser x:Name="Web_BUG_NONE_NONE" HorizontalAlignment="Left" Height="652" Margin="240,50,0,0" VerticalAlignment="Top" Width="734"/>
+                    <Button x:Name="ProjektStarten_BUG_NONE_NONE" Content="Projekt starten" HorizontalAlignment="Left" Height="30" Margin="240,10,0,0" VerticalAlignment="Top" Width="734" IsEnabled="False" Click="ProjektStarten" FontSize="16"/>
+                </Grid>
+            </TabItem>            
+        </TabControl>
+
+    </Grid>
+</Window>
