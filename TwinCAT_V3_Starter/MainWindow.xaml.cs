@@ -28,7 +28,14 @@ namespace TwinCAT_V3_Starter
 
         public static void Refresh(this UIElement uiElement)
         {
-            uiElement.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+            try
+            {
+                uiElement.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+            }
+            catch (Exception exp)
+            {
+
+            }
         }
     }
 
@@ -66,14 +73,14 @@ namespace TwinCAT_V3_Starter
 
                 if (Projekt.Contains("KOP"))
                 {
-                    Sprache = " (KOP)";
+                    Sprache = " (KOP/LD)";
                     TextLaenge = 3;
                 }
                 else
                 {
                     if (Projekt.Contains("FUP"))
                     {
-                        Sprache = " (FUP)";
+                        Sprache = " (FUP/FBD)";
                         TextLaenge = 3;
                     }
                     else
@@ -94,14 +101,14 @@ namespace TwinCAT_V3_Starter
                             {
                                 if (Projekt.Contains("AWL"))
                                 {
-                                    Sprache = " (AWL)";
+                                    Sprache = " (AWL/IL)";
                                     TextLaenge = 3;
                                 }
                                 else
                                 {
                                     if (Projekt.Contains("AS"))
                                     {
-                                        Sprache = " (AS)";
+                                        Sprache = " (AS/SFC)";
                                         TextLaenge = 2;
                                     }
                                 }
@@ -165,25 +172,17 @@ namespace TwinCAT_V3_Starter
             string HtmlSeite = System.IO.File.ReadAllText(DateiName);
             string LeereHtmlSeite = "<!doctype html>   </html >";
 
-            if (rb.Name.Contains("PLC_NONE_NONE"))
-                Web_PLC_NONE_NONE.NavigateToString(HtmlSeite);
-            else
-                Web_PLC_NONE_NONE.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("PLC_NONE_NONE")) Web_PLC_NONE_NONE.NavigateToString(HtmlSeite);
+            else Web_PLC_NONE_NONE.NavigateToString(LeereHtmlSeite);
 
-            if (rb.Name.Contains("PLC_VISU_NONE"))
-                Web_PLC_VISU_NONE.NavigateToString(HtmlSeite);
-            else
-                Web_PLC_VISU_NONE.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("PLC_VISU_NONE")) Web_PLC_VISU_NONE.NavigateToString(HtmlSeite);
+            else Web_PLC_VISU_NONE.NavigateToString(LeereHtmlSeite);
 
-            if (rb.Name.Contains("PLC_NONE_NC"))
-                Web_PLC_NONE_NC.NavigateToString(HtmlSeite);
-            else
-                Web_PLC_NONE_NC.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("PLC_NONE_NC")) Web_PLC_NONE_NC.NavigateToString(HtmlSeite);
+            else Web_PLC_NONE_NC.NavigateToString(LeereHtmlSeite);
 
-            if (rb.Name.Contains("BUG_NONE_NONE"))
-                Web_BUG_NONE_NONE.NavigateToString(HtmlSeite);
-            else
-                Web_BUG_NONE_NONE.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("BUG_NONE_NONE")) Web_BUG_NONE_NONE.NavigateToString(HtmlSeite);
+            else Web_BUG_NONE_NONE.NavigateToString(LeereHtmlSeite);
 
         }
 
@@ -264,6 +263,11 @@ namespace TwinCAT_V3_Starter
                     Knopf2.Background = new SolidColorBrush(Colors.Green);
                     Knopf3.Background = new SolidColorBrush(Colors.Green);
                     Knopf4.Background = new SolidColorBrush(Colors.Green);
+
+                    Knopf1.Refresh();
+                    Knopf2.Refresh();
+                    Knopf3.Refresh();
+                    Knopf4.Refresh();
                     break;
 
                 case "Disable":
@@ -276,6 +280,11 @@ namespace TwinCAT_V3_Starter
                     Knopf2.IsEnabled = false;
                     Knopf3.IsEnabled = false;
                     Knopf4.IsEnabled = false;
+
+                    Knopf1.Refresh();
+                    Knopf2.Refresh();
+                    Knopf3.Refresh();
+                    Knopf4.Refresh();
                     break;
 
                 case "Start":
