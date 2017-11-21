@@ -34,7 +34,6 @@ namespace TwinCAT_V3_Starter
             }
             catch (Exception exp)
             {
-
             }
         }
     }
@@ -44,6 +43,7 @@ namespace TwinCAT_V3_Starter
 
         string ProjektName = "";
         string ProjektPfad = "h:\\TwinCAT_V3";
+        List<RadioButton> RadioButtonList = new List<RadioButton>();
 
         public MainWindow()
         {
@@ -53,11 +53,28 @@ namespace TwinCAT_V3_Starter
 
         public void ProjekteLesen()
         {
+
+            /*
+            * Aufbau der Projektnamen (Ordner)
+            * TwinCAT_V3_PLC_WEB_FUP_Linearachse
+            * 
+            * _PLC_ oder  _BUG_    
+            * + _NC_
+            * + _HMI
+            * + _VISU_
+            * + _FIO_
+            * + _WEB_
+            * 
+            * _AWL_ oder _AS_ oder _FUP_ oder _KOP_ oder _SCL_ oder _ST_
+            * 
+            * */
+
+
             List<string> ProjektVerzeichnis = new List<string>();
-            List<string> Projekte_PLC_NONE_NONE = new List<string>();
-            List<string> Projekte_PLC_VISU_NONE = new List<string>();
-            List<string> Projekte_PLC_NONE_FIO = new List<string>();
-            List<string> Projekte_BUG_NONE_NONE = new List<string>();
+            List<string> Projekte_PLC = new List<string>();
+            List<string> Projekte_PLC_VISU = new List<string>();
+            List<string> Projekte_PLC_FIO = new List<string>();
+            List<string> Projekte_BUG = new List<string>();
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("Projekte");
 
@@ -69,53 +86,39 @@ namespace TwinCAT_V3_Starter
             foreach (string Projekt in ProjektVerzeichnis)
             {
                 string Sprache = "";
-                int TextLaenge = 0;
+                int StartBezeichnung = 0;
 
+                if (Projekt.Contains("AS"))
+                {
+                    Sprache = " (AS/SFC)";
+                    StartBezeichnung = 3 + Projekt.IndexOf("AS");
+                }
+                if (Projekt.Contains("AWL"))
+                {
+                    Sprache = " (AWL/IL)";
+                    StartBezeichnung = 4 + Projekt.IndexOf("AWL");
+                }
+                if (Projekt.Contains("CFC"))
+                {
+                    Sprache = " (CFC)";
+                    StartBezeichnung = 4 + Projekt.IndexOf("CFC");
+                }
+                if (Projekt.Contains("FUP"))
+                {
+                    Sprache = " (FUP/FBD)";
+                    StartBezeichnung = 4 + Projekt.IndexOf("FUP");
+                }
                 if (Projekt.Contains("KOP"))
                 {
                     Sprache = " (KOP/LD)";
-                    TextLaenge = 3;
+                    StartBezeichnung = 4 + Projekt.IndexOf("KOP");
                 }
-                else
+                if (Projekt.Contains("ST"))
                 {
-                    if (Projekt.Contains("FUP"))
-                    {
-                        Sprache = " (FUP/FBD)";
-                        TextLaenge = 3;
-                    }
-                    else
-                    {
-                        if (Projekt.Contains("ST"))
-                        {
-                            Sprache = " (ST)";
-                            TextLaenge = 2;
-                        }
-                        else
-                        {
-                            if (Projekt.Contains("CFC"))
-                            {
-                                Sprache = " (CFC)";
-                                TextLaenge = 3;
-                            }
-                            else
-                            {
-                                if (Projekt.Contains("AWL"))
-                                {
-                                    Sprache = " (AWL/IL)";
-                                    TextLaenge = 3;
-                                }
-                                else
-                                {
-                                    if (Projekt.Contains("AS"))
-                                    {
-                                        Sprache = " (AS/SFC)";
-                                        TextLaenge = 2;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Sprache = " (ST)";
+                    StartBezeichnung = 3 + Projekt.IndexOf("ST");
                 }
+
 
                 RadioButton rdo = new RadioButton();
                 rdo.GroupName = "TIA_PORTAL_V14_SP1";
@@ -123,38 +126,44 @@ namespace TwinCAT_V3_Starter
                 rdo.Checked += new RoutedEventHandler(radioButton_Checked);
                 rdo.FontSize = 14;
 
-                if (Projekt.Contains("PLC_NONE_NONE"))
+
+
+                if (Projekt.Contains("PLC"))
                 {
-                    TextLaenge += 26;
-                    rdo.Content = Projekt.Substring(TextLaenge).Replace("_", " ") + Sprache;
-                    rdo.Name = Projekt;
-                    StackPanel_PLC_NONE_NONE.Children.Add(rdo);
+                    if (Projekt.Contains("VISU"))
+                    {
+                        rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
+                        rdo.Name = Projekt;
+                        StackPanel_PLC_VISU.Children.Add(rdo);
+                    }
+                    else
+                    {
+
+                        if (Projekt.Contains("NC"))
+                        {
+                            rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
+                            rdo.Name = Projekt;
+                            StackPanel_PLC_NC.Children.Add(rdo);
+                        }
+                        else
+                        {
+                            // nur PLC und sonst nichts
+                            rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
+                            rdo.Name = Projekt;
+                            StackPanel_PLC.Children.Add(rdo);
+                        }
+                    }
                 }
-                if (Projekt.Contains("PLC_VISU_NONE"))
+                else
                 {
-                    TextLaenge += 26;
-                    rdo.Content = Projekt.Substring(TextLaenge).Replace("_", " ") + Sprache;
+                    // Es gibt momentan noch keine Gruppe bei den Bugs
+                    rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
                     rdo.Name = Projekt;
-                    StackPanel_PLC_VISU_NONE.Children.Add(rdo);
-                }
-                if (Projekt.Contains("PLC_NONE_NC"))
-                {
-                    TextLaenge += 24;
-                    rdo.Content = Projekt.Substring(TextLaenge).Replace("_", " ") + Sprache;
-                    rdo.Name = Projekt;
-                    StackPanel_PLC_NONE_NC.Children.Add(rdo);
-                }
-                if (Projekt.Contains("BUG_NONE_NONE"))
-                {
-                    TextLaenge += 25;
-                    rdo.Content = Projekt.Substring(TextLaenge).Replace("_", " ") + Sprache;
-                    rdo.Name = Projekt;
-                    StackPanel_BUG_NONE_NONE.Children.Add(rdo);
+                    StackPanel_BUG.Children.Add(rdo);
                 }
 
+                RadioButtonList.Add(rdo);
             }
-
-
 
 
         }
@@ -164,7 +173,7 @@ namespace TwinCAT_V3_Starter
             RadioButton rb = sender as RadioButton;
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("Projekte");
 
-            EigenschaftenAendern(ProjektStarten_BUG_NONE_NONE, ProjektStarten_PLC_NONE_NC, ProjektStarten_PLC_NONE_NONE, ProjektStarten_PLC_VISU_NONE, "Enable", "-");
+            EigenschaftenAendern(ProjektStarten_BUG, ProjektStarten_PLC_NC, ProjektStarten_PLC, ProjektStarten_PLC_VISU, "Enable", "-");
 
             ProjektName = rb.Name;
 
@@ -172,17 +181,17 @@ namespace TwinCAT_V3_Starter
             string HtmlSeite = System.IO.File.ReadAllText(DateiName);
             string LeereHtmlSeite = "<!doctype html>   </html >";
 
-            if (rb.Name.Contains("PLC_NONE_NONE")) Web_PLC_NONE_NONE.NavigateToString(HtmlSeite);
-            else Web_PLC_NONE_NONE.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("PLC")) Web_PLC.NavigateToString(HtmlSeite);
+            else Web_PLC.NavigateToString(LeereHtmlSeite);
 
-            if (rb.Name.Contains("PLC_VISU_NONE")) Web_PLC_VISU_NONE.NavigateToString(HtmlSeite);
-            else Web_PLC_VISU_NONE.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("PLC_VISU_NONE")) Web_PLC_VISU.NavigateToString(HtmlSeite);
+            else Web_PLC_VISU.NavigateToString(LeereHtmlSeite);
 
-            if (rb.Name.Contains("PLC_NONE_NC")) Web_PLC_NONE_NC.NavigateToString(HtmlSeite);
-            else Web_PLC_NONE_NC.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("PLC_NONE_NC")) Web_PLC_NC.NavigateToString(HtmlSeite);
+            else Web_PLC_NC.NavigateToString(LeereHtmlSeite);
 
-            if (rb.Name.Contains("BUG_NONE_NONE")) Web_BUG_NONE_NONE.NavigateToString(HtmlSeite);
-            else Web_BUG_NONE_NONE.NavigateToString(LeereHtmlSeite);
+            if (rb.Name.Contains("BUG_NONE_NONE")) Web_BUG.NavigateToString(HtmlSeite);
+            else Web_BUG.NavigateToString(LeereHtmlSeite);
 
         }
 
@@ -192,13 +201,13 @@ namespace TwinCAT_V3_Starter
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("Projekte");
             string sourceDirectory = ParentDirectory.FullName + "\\" + ProjektName;
 
-            EigenschaftenAendern(ProjektStarten_BUG_NONE_NONE, ProjektStarten_PLC_NONE_NC, ProjektStarten_PLC_NONE_NONE, ProjektStarten_PLC_VISU_NONE, "Start", "Ordner " + ProjektPfad + " löschen");
+            EigenschaftenAendern(ProjektStarten_BUG, ProjektStarten_PLC_NC, ProjektStarten_PLC, ProjektStarten_PLC_VISU, "Start", "Ordner " + ProjektPfad + " löschen");
             if (System.IO.Directory.Exists(ProjektPfad)) System.IO.Directory.Delete(ProjektPfad, true);
 
-            EigenschaftenAendern(ProjektStarten_BUG_NONE_NONE, ProjektStarten_PLC_NONE_NC, ProjektStarten_PLC_NONE_NONE, ProjektStarten_PLC_VISU_NONE, "Start", "Ordner " + ProjektPfad + " erstellen");
+            EigenschaftenAendern(ProjektStarten_BUG, ProjektStarten_PLC_NC, ProjektStarten_PLC, ProjektStarten_PLC_VISU, "Start", "Ordner " + ProjektPfad + " erstellen");
             System.IO.Directory.CreateDirectory(ProjektPfad);
 
-            EigenschaftenAendern(ProjektStarten_BUG_NONE_NONE, ProjektStarten_PLC_NONE_NC, ProjektStarten_PLC_NONE_NONE, ProjektStarten_PLC_VISU_NONE, "Start", "Alle Dateien kopieren");
+            EigenschaftenAendern(ProjektStarten_BUG, ProjektStarten_PLC_NC, ProjektStarten_PLC, ProjektStarten_PLC_VISU, "Start", "Alle Dateien kopieren");
             Copy(sourceDirectory, ProjektPfad);
 
 
@@ -240,13 +249,13 @@ namespace TwinCAT_V3_Starter
         private void TabControl_SelectionChanged(object sender, RoutedEventArgs e)
         {
 
-            EigenschaftenAendern(ProjektStarten_BUG_NONE_NONE, ProjektStarten_PLC_NONE_NC, ProjektStarten_PLC_NONE_NONE, ProjektStarten_PLC_VISU_NONE, "Disable", "-");
+            EigenschaftenAendern(ProjektStarten_BUG, ProjektStarten_PLC_NC, ProjektStarten_PLC, ProjektStarten_PLC_VISU, "Disable", "-");
 
             string LeereHtmlSeite = "<!doctype html>   </html >";
-            Web_PLC_NONE_NONE.NavigateToString(LeereHtmlSeite);
-            Web_PLC_VISU_NONE.NavigateToString(LeereHtmlSeite);
-            Web_PLC_NONE_NC.NavigateToString(LeereHtmlSeite);
-            Web_BUG_NONE_NONE.NavigateToString(LeereHtmlSeite);
+            Web_PLC.NavigateToString(LeereHtmlSeite);
+            Web_PLC_VISU.NavigateToString(LeereHtmlSeite);
+            Web_PLC_NC.NavigateToString(LeereHtmlSeite);
+            Web_BUG.NavigateToString(LeereHtmlSeite);
         }
 
         private void EigenschaftenAendern(Button Knopf1, Button Knopf2, Button Knopf3, Button Knopf4, String ToDo, string Text)
@@ -271,6 +280,12 @@ namespace TwinCAT_V3_Starter
                     break;
 
                 case "Disable":
+
+                    foreach (RadioButton R_Button in RadioButtonList)
+                    {
+                        if (R_Button.IsChecked == true) R_Button.IsChecked = false;
+                    }
+
                     Knopf1.Background = new SolidColorBrush(Colors.Gray);
                     Knopf2.Background = new SolidColorBrush(Colors.Gray);
                     Knopf3.Background = new SolidColorBrush(Colors.Gray);
@@ -307,12 +322,7 @@ namespace TwinCAT_V3_Starter
                 default:
                     break;
             }
-
         }
-
-
-
-
 
     }
 }
