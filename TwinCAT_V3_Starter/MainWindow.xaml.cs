@@ -165,7 +165,6 @@ namespace TwinCAT_V3_Starter
                 RadioButtonList.Add(rdo);
             }
 
-
         }
 
         private void radioButton_Checked(object sender, RoutedEventArgs e)
@@ -181,18 +180,26 @@ namespace TwinCAT_V3_Starter
             string HtmlSeite = System.IO.File.ReadAllText(DateiName);
             string LeereHtmlSeite = "<!doctype html>   </html >";
 
-            if (rb.Name.Contains("PLC")) Web_PLC.NavigateToString(HtmlSeite);
-            else Web_PLC.NavigateToString(LeereHtmlSeite);
+            Web_PLC.NavigateToString(LeereHtmlSeite);
+            Web_PLC_VISU.NavigateToString(LeereHtmlSeite);
+            Web_PLC_NC.NavigateToString(LeereHtmlSeite);
+            Web_BUG.NavigateToString(LeereHtmlSeite);
 
-            if (rb.Name.Contains("PLC_VISU_NONE")) Web_PLC_VISU.NavigateToString(HtmlSeite);
-            else Web_PLC_VISU.NavigateToString(LeereHtmlSeite);
-
-            if (rb.Name.Contains("PLC_NONE_NC")) Web_PLC_NC.NavigateToString(HtmlSeite);
-            else Web_PLC_NC.NavigateToString(LeereHtmlSeite);
-
-            if (rb.Name.Contains("BUG_NONE_NONE")) Web_BUG.NavigateToString(HtmlSeite);
-            else Web_BUG.NavigateToString(LeereHtmlSeite);
-
+            if (rb.Name.Contains("PLC"))
+            {
+                if (rb.Name.Contains("VISU"))
+                    Web_PLC_VISU.NavigateToString(HtmlSeite);
+                else
+                {
+                    if (rb.Name.Contains("NC")) Web_PLC_NC.NavigateToString(HtmlSeite);
+                    else Web_PLC.NavigateToString(HtmlSeite);
+                }
+            }
+            else
+            {
+                if (rb.Name.Contains("BUG")) Web_BUG.NavigateToString(HtmlSeite);
+                //bei Bug gibt es keine Unterkategorien
+            }
         }
 
         private void ProjektStarten(object sender, RoutedEventArgs e)
@@ -209,8 +216,7 @@ namespace TwinCAT_V3_Starter
 
             EigenschaftenAendern(ProjektStarten_BUG, ProjektStarten_PLC_NC, ProjektStarten_PLC, ProjektStarten_PLC_VISU, "Start", "Alle Dateien kopieren");
             Copy(sourceDirectory, ProjektPfad);
-
-
+            
             Process proc = new Process();
             proc.StartInfo.FileName = ProjektPfad + "\\start.cmd";
             proc.StartInfo.WorkingDirectory = ProjektPfad;
