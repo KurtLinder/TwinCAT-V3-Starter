@@ -73,13 +73,97 @@ namespace TwinCAT_V3_Starter
             List<string> ProjektVerzeichnis = new List<string>();
             List<string> Projekte_PLC = new List<string>();
             List<string> Projekte_PLC_VISU = new List<string>();
-            List<string> Projekte_PLC_FIO = new List<string>();
+            List<string> Projekte_PLC_NC = new List<string>();
             List<string> Projekte_BUG = new List<string>();
+
+            // Name Komplett, kurz, Sprache, Anfang
+            List<Tuple<string, string, string>> TupleList_PLC = new List<Tuple<string, string, string >>();
+            List<Tuple<string, string, string>> TupleList_PLC_VISU = new List<Tuple<string, string, string >>();
+            List<Tuple<string, string, string>> TupleList_PLC_NC = new List<Tuple<string, string, string >>();
+            List<Tuple<string, string, string >> TupleList_BUG = new List<Tuple<string, string, string >>();
+
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("Projekte");
 
             foreach (System.IO.DirectoryInfo d in ParentDirectory.GetDirectories())
+            {
+
                 ProjektVerzeichnis.Add(d.Name);
+
+                string OrdnerName = d.Name;
+                string Bezeichnung;
+                string Sprache = "";
+                int StartBezeichnung = 0;
+                              
+
+                
+                if (OrdnerName.Contains("AS"))
+                {
+                    Sprache = " (AS/SFC)";
+                    StartBezeichnung = 3 + OrdnerName.IndexOf("AS");
+                }
+                if (OrdnerName.Contains("AWL"))
+                {
+                    Sprache = " (AWL/IL)";
+                    StartBezeichnung = 4 + OrdnerName.IndexOf("AWL");
+                }
+                if (OrdnerName.Contains("CFC"))
+                {
+                    Sprache = " (CFC)";
+                    StartBezeichnung = 4 + OrdnerName.IndexOf("CFC");
+                }
+                if (OrdnerName.Contains("FUP"))
+                {
+                    Sprache = " (FUP/FBD)";
+                    StartBezeichnung = 4 + OrdnerName.IndexOf("FUP");
+                }
+                if (OrdnerName.Contains("KOP"))
+                {
+                    Sprache = " (KOP/LD)";
+                    StartBezeichnung = 4 + OrdnerName.IndexOf("KOP");
+                }
+                if (OrdnerName.Contains("ST"))
+                {
+                    Sprache = " (ST)";
+                    StartBezeichnung = 3 + OrdnerName.IndexOf("ST");
+                }
+
+
+               Bezeichnung = OrdnerName.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
+
+
+
+
+                if (d.Name.Contains("PLC"))
+                {
+                    if (d.Name.Contains("VISU"))
+                    {
+                    }
+                    else
+                    {
+
+                        if (d.Name.Contains("NC"))
+                        {
+
+                        }
+                        else
+                        {
+                            // nur PLC und sonst nichts
+
+                        }
+                    }
+                }
+                else
+                {
+                    // Es gibt momentan noch keine Gruppe bei den Bugs
+                    tr.Add(new Tuple<string, string>("Test", "Add");
+
+                }
+
+            }
+
+
+
 
             ProjektVerzeichnis.Sort();
 
