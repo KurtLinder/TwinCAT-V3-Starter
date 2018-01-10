@@ -70,139 +70,102 @@ namespace TwinCAT_V3_Starter
             * */
 
 
-            List<string> ProjektVerzeichnis = new List<string>();
-            List<string> Projekte_PLC = new List<string>();
-            List<string> Projekte_PLC_VISU = new List<string>();
-            List<string> Projekte_PLC_NC = new List<string>();
-            List<string> Projekte_BUG = new List<string>();
-
             // Name Komplett, kurz, Sprache, Anfang
-            List<Tuple<string, string, string>> TupleList_PLC = new List<Tuple<string, string, string >>();
-            List<Tuple<string, string, string>> TupleList_PLC_VISU = new List<Tuple<string, string, string >>();
-            List<Tuple<string, string, string>> TupleList_PLC_NC = new List<Tuple<string, string, string >>();
-            List<Tuple<string, string, string >> TupleList_BUG = new List<Tuple<string, string, string >>();
+            List<Tuple<string, string, string>> TupleList_PLC = new List<Tuple<string, string, string>>();
+            List<Tuple<string, string, string>> TupleList_PLC_VISU = new List<Tuple<string, string, string>>();
+            List<Tuple<string, string, string>> TupleList_PLC_NC = new List<Tuple<string, string, string>>();
+            List<Tuple<string, string, string>> TupleList_BUG = new List<Tuple<string, string, string>>();
 
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("Projekte");
 
             foreach (System.IO.DirectoryInfo d in ParentDirectory.GetDirectories())
             {
-
-                ProjektVerzeichnis.Add(d.Name);
-
                 string OrdnerName = d.Name;
-                string Bezeichnung;
                 string Sprache = "";
                 int StartBezeichnung = 0;
-                              
-
                 
                 if (OrdnerName.Contains("AS"))
                 {
-                    Sprache = " (AS/SFC)";
+                    Sprache = "AS/SFC";
                     StartBezeichnung = 3 + OrdnerName.IndexOf("AS");
                 }
                 if (OrdnerName.Contains("AWL"))
                 {
-                    Sprache = " (AWL/IL)";
+                    Sprache = "AWL/IL";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("AWL");
                 }
                 if (OrdnerName.Contains("CFC"))
                 {
-                    Sprache = " (CFC)";
+                    Sprache = "CFC";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("CFC");
                 }
                 if (OrdnerName.Contains("FUP"))
                 {
-                    Sprache = " (FUP/FBD)";
+                    Sprache = "FUP/FBD";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("FUP");
                 }
                 if (OrdnerName.Contains("KOP"))
                 {
-                    Sprache = " (KOP/LD)";
+                    Sprache = "KOP/LD";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("KOP");
                 }
                 if (OrdnerName.Contains("ST"))
                 {
-                    Sprache = " (ST)";
+                    Sprache = "ST";
                     StartBezeichnung = 3 + OrdnerName.IndexOf("ST");
                 }
-
-
-               Bezeichnung = OrdnerName.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
-
-
-
-
+                
+    
                 if (d.Name.Contains("PLC"))
                 {
                     if (d.Name.Contains("VISU"))
                     {
+                        Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                        TupleList_PLC_VISU.Add(TplEintrag);
                     }
                     else
                     {
-
                         if (d.Name.Contains("NC"))
                         {
-
+                            Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                            TupleList_PLC_NC.Add(TplEintrag);
                         }
                         else
                         {
                             // nur PLC und sonst nichts
-
+                            Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                            TupleList_PLC.Add(TplEintrag);
                         }
                     }
                 }
                 else
                 {
                     // Es gibt momentan noch keine Gruppe bei den Bugs
-                    tr.Add(new Tuple<string, string>("Test", "Add");
-
+                    Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                    TupleList_BUG.Add(TplEintrag);
                 }
 
-            }
+            } // Ende foreach
 
+            TupleList_PLC.Sort();
+            TupleList_PLC_NC.Sort();
+            TupleList_PLC_VISU.Sort();
+            TupleList_BUG.Sort();
 
+            TabMitInhaltFuellen(TupleList_PLC, StackPanel_PLC);
+            TabMitInhaltFuellen(TupleList_PLC_NC, StackPanel_PLC_NC);
+            TabMitInhaltFuellen(TupleList_PLC_VISU, StackPanel_PLC_VISU);
+            TabMitInhaltFuellen(TupleList_BUG, StackPanel_BUG);
+           }
 
-
-            ProjektVerzeichnis.Sort();
-
-            foreach (string Projekt in ProjektVerzeichnis)
+        private void TabMitInhaltFuellen(List<Tuple<string, string, string>> Projekte, System.Windows.Controls.StackPanel StackPanel)
+        {
+            foreach (Tuple<string, string, string> Projekt in Projekte)
             {
-                string Sprache = "";
-                int StartBezeichnung = 0;
-
-                if (Projekt.Contains("AS"))
-                {
-                    Sprache = " (AS/SFC)";
-                    StartBezeichnung = 3 + Projekt.IndexOf("AS");
-                }
-                if (Projekt.Contains("AWL"))
-                {
-                    Sprache = " (AWL/IL)";
-                    StartBezeichnung = 4 + Projekt.IndexOf("AWL");
-                }
-                if (Projekt.Contains("CFC"))
-                {
-                    Sprache = " (CFC)";
-                    StartBezeichnung = 4 + Projekt.IndexOf("CFC");
-                }
-                if (Projekt.Contains("FUP"))
-                {
-                    Sprache = " (FUP/FBD)";
-                    StartBezeichnung = 4 + Projekt.IndexOf("FUP");
-                }
-                if (Projekt.Contains("KOP"))
-                {
-                    Sprache = " (KOP/LD)";
-                    StartBezeichnung = 4 + Projekt.IndexOf("KOP");
-                }
-                if (Projekt.Contains("ST"))
-                {
-                    Sprache = " (ST)";
-                    StartBezeichnung = 3 + Projekt.IndexOf("ST");
-                }
-
+                string Bezeichnung = Projekt.Item1;
+                string Sprache = Projekt.Item2;
+                string Ordner = Projekt.Item3;
 
                 RadioButton rdo = new RadioButton();
                 rdo.GroupName = "TIA_PORTAL_V14_SP1";
@@ -210,43 +173,10 @@ namespace TwinCAT_V3_Starter
                 rdo.Checked += new RoutedEventHandler(radioButton_Checked);
                 rdo.FontSize = 14;
 
-
-
-                if (Projekt.Contains("PLC"))
-                {
-                    if (Projekt.Contains("VISU"))
-                    {
-                        rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
-                        rdo.Name = Projekt;
-                        StackPanel_PLC_VISU.Children.Add(rdo);
-                    }
-                    else
-                    {
-
-                        if (Projekt.Contains("NC"))
-                        {
-                            rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
-                            rdo.Name = Projekt;
-                            StackPanel_PLC_NC.Children.Add(rdo);
-                        }
-                        else
-                        {
-                            // nur PLC und sonst nichts
-                            rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
-                            rdo.Name = Projekt;
-                            StackPanel_PLC.Children.Add(rdo);
-                        }
-                    }
-                }
-                else
-                {
-                    // Es gibt momentan noch keine Gruppe bei den Bugs
-                    rdo.Content = Projekt.Substring(StartBezeichnung).Replace("_", " ") + Sprache;
-                    rdo.Name = Projekt;
-                    StackPanel_BUG.Children.Add(rdo);
-                }
-
-                RadioButtonList.Add(rdo);
+                // nur PLC und sonst nichts
+                rdo.Content = Bezeichnung + " (" + Sprache + ")";
+                rdo.Name = Ordner;
+                StackPanel.Children.Add(rdo);
             }
 
         }
@@ -254,6 +184,7 @@ namespace TwinCAT_V3_Starter
         private void radioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton rb = sender as RadioButton;
+
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("Projekte");
 
             DarstellungAendern(ProjektStarten_BUG, true, Colors.Green, "Projekt starten");
