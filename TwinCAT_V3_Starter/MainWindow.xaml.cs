@@ -71,10 +71,6 @@ namespace TwinCAT_V3_Starter
 
 
             List<string> ProjektVerzeichnis = new List<string>();
-            List<string> Projekte_PLC = new List<string>();
-            List<string> Projekte_PLC_VISU = new List<string>();
-            List<string> Projekte_PLC_NC = new List<string>();
-            List<string> Projekte_BUG = new List<string>();
 
             // Name Komplett, kurz, Sprache, Anfang
             List<Tuple<string, string, string>> TupleList_PLC = new List<Tuple<string, string, string >>();
