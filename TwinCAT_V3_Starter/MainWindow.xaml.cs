@@ -41,7 +41,7 @@ namespace TwinCAT_V3_Starter
 
     public partial class MainWindow : Window
     {
-
+        bool AnzeigeAktualisieren = false;
         string ProjektName = "";
         string ProjektPfad = "h:\\TwinCAT_V3";
         List<RadioButton> RadioButtonList = new List<RadioButton>();
@@ -71,6 +71,12 @@ namespace TwinCAT_V3_Starter
             * 
             * */
 
+            // Zuerst die Listen löschen
+            StackPanel_BUG.Children.Clear();
+            StackPanel_PLC.Children.Clear();
+            StackPanel_PLC_NC.Children.Clear();
+            StackPanel_PLC_VISU.Children.Clear();
+            //
             ButtonListe.Add(ProjektStarten_BUG);
             ButtonListe.Add(ProjektStarten_PLC);
             ButtonListe.Add(ProjektStarten_PLC_NC);
@@ -89,58 +95,91 @@ namespace TwinCAT_V3_Starter
                 string OrdnerName = d.Name;
                 string Sprache = "";
                 int StartBezeichnung = 0;
+                bool Anzeigen = false;
 
                 if (OrdnerName.Contains("AS"))
                 {
+                    if (Checkbox_AS.IsChecked.Value)
+                    {
+                        Anzeigen = true;
+                    }
+
                     Sprache = "AS/SFC";
                     StartBezeichnung = 3 + OrdnerName.IndexOf("AS");
                 }
                 if (OrdnerName.Contains("AWL"))
                 {
+                    if (Checkbox_AWL.IsChecked.Value)
+                    {
+                        Anzeigen = true;
+                    }
+
                     Sprache = "AWL/IL";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("AWL");
                 }
                 if (OrdnerName.Contains("CFC"))
                 {
+                    if (Checkbox_CFC.IsChecked.Value)
+                    {
+                        Anzeigen = true;
+                    }
+
                     Sprache = "CFC";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("CFC");
                 }
                 if (OrdnerName.Contains("FUP"))
                 {
+                    if (Checkbox_FUP.IsChecked.Value)
+                    {
+                        Anzeigen = true;
+                    }
+
                     Sprache = "FUP/FBD";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("FUP");
                 }
                 if (OrdnerName.Contains("KOP"))
                 {
+                    if (Checkbox_KOP.IsChecked.Value)
+                    {
+                        Anzeigen = true;
+                    }
+
                     Sprache = "KOP/LD";
                     StartBezeichnung = 4 + OrdnerName.IndexOf("KOP");
                 }
                 if (OrdnerName.Contains("ST"))
                 {
+                    if (Checkbox_ST.IsChecked.Value)
+                    {
+                        Anzeigen = true;
+                    }
+
                     Sprache = "ST";
                     StartBezeichnung = 3 + OrdnerName.IndexOf("ST");
                 }
 
-
-                if (d.Name.Contains("PLC"))
+                if (Anzeigen)
                 {
-                    if (d.Name.Contains("VISU"))
+                    if (d.Name.Contains("PLC"))
                     {
-                        Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
-                        TupleList_PLC_VISU.Add(TplEintrag);
-                    }
-                    else
-                    {
-                        if (d.Name.Contains("NC"))
+                        if (d.Name.Contains("VISU"))
                         {
                             Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
-                            TupleList_PLC_NC.Add(TplEintrag);
+                            TupleList_PLC_VISU.Add(TplEintrag);
                         }
                         else
                         {
-                            // nur PLC und sonst nichts
-                            Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
-                            TupleList_PLC.Add(TplEintrag);
+                            if (d.Name.Contains("NC"))
+                            {
+                                Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                                TupleList_PLC_NC.Add(TplEintrag);
+                            }
+                            else
+                            {
+                                // nur PLC und sonst nichts
+                                Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                                TupleList_PLC.Add(TplEintrag);
+                            }
                         }
                     }
                 }
@@ -162,6 +201,8 @@ namespace TwinCAT_V3_Starter
             TabMitInhaltFuellen(TupleList_PLC_NC, StackPanel_PLC_NC);
             TabMitInhaltFuellen(TupleList_PLC_VISU, StackPanel_PLC_VISU);
             TabMitInhaltFuellen(TupleList_BUG, StackPanel_BUG);
+
+            AnzeigeAktualisieren = true;
         }
 
         private void TabMitInhaltFuellen(List<Tuple<string, string, string>> Projekte, System.Windows.Controls.StackPanel StackPanel)
@@ -326,6 +367,36 @@ namespace TwinCAT_V3_Starter
             {
                 if (R_Button.IsChecked == true) R_Button.IsChecked = false;
             }
+        }
+
+        private void Klick_CheckBox_AS(object sender, RoutedEventArgs e)
+        {
+            if (AnzeigeAktualisieren) ProjekteLesen();
+        }
+
+        private void Klick_CheckBox_AWL(object sender, RoutedEventArgs e)
+        {
+            if (AnzeigeAktualisieren) ProjekteLesen();
+        }
+
+        private void Klick_CheckBox_CFC(object sender, RoutedEventArgs e)
+        {
+            if (AnzeigeAktualisieren) ProjekteLesen();
+        }
+
+        private void Klick_CheckBox_FUP(object sender, RoutedEventArgs e)
+        {
+            if (AnzeigeAktualisieren) ProjekteLesen();
+        }
+
+        private void Klick_CheckBox_KOP(object sender, RoutedEventArgs e)
+        {
+            if (AnzeigeAktualisieren) ProjekteLesen();
+        }
+
+        private void Klick_CheckBox_ST(object sender, RoutedEventArgs e)
+        {
+            if (AnzeigeAktualisieren) ProjekteLesen();
         }
 
     }
