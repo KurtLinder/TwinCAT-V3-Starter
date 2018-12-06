@@ -66,6 +66,7 @@ namespace TwinCAT_V3_Starter
             * + _VISU_
             * + _FIO_
             * + _WEB_
+            * + _DT_
             * 
             * _AWL_ oder _AS_ oder _FUP_ oder _KOP_ oder _SCL_ oder _ST_
             * 
@@ -76,17 +77,20 @@ namespace TwinCAT_V3_Starter
             StackPanel_PLC.Children.Clear();
             StackPanel_PLC_NC.Children.Clear();
             StackPanel_PLC_VISU.Children.Clear();
+            StackPanel_DigitalTwin.Children.Clear();
             //
             ButtonListe.Add(ProjektStarten_BUG);
             ButtonListe.Add(ProjektStarten_PLC);
             ButtonListe.Add(ProjektStarten_PLC_NC);
             ButtonListe.Add(ProjektStarten_PLC_VISU);
+            ButtonListe.Add(ProjektStarten_DigitalTwin);
 
             // Name Komplett, kurz, Sprache, Anfang
             List<Tuple<string, string, string>> TupleList_PLC = new List<Tuple<string, string, string>>();
             List<Tuple<string, string, string>> TupleList_PLC_VISU = new List<Tuple<string, string, string>>();
             List<Tuple<string, string, string>> TupleList_PLC_NC = new List<Tuple<string, string, string>>();
             List<Tuple<string, string, string>> TupleList_BUG = new List<Tuple<string, string, string>>();
+            List<Tuple<string, string, string>> TupleList_DigitalTwin = new List<Tuple<string, string, string>>();
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("Projekte");
 
@@ -160,25 +164,34 @@ namespace TwinCAT_V3_Starter
 
                 if (Anzeigen)
                 {
+
                     if (d.Name.Contains("PLC"))
                     {
-                        if (d.Name.Contains("VISU"))
+                        if (d.Name.Contains("DT"))
                         {
                             Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
-                            TupleList_PLC_VISU.Add(TplEintrag);
+                            TupleList_DigitalTwin.Add(TplEintrag);
                         }
                         else
                         {
-                            if (d.Name.Contains("NC"))
+                            if (d.Name.Contains("VISU"))
                             {
                                 Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
-                                TupleList_PLC_NC.Add(TplEintrag);
+                                TupleList_PLC_VISU.Add(TplEintrag);
                             }
                             else
                             {
-                                // nur PLC und sonst nichts
-                                Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
-                                TupleList_PLC.Add(TplEintrag);
+                                if (d.Name.Contains("NC"))
+                                {
+                                    Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                                    TupleList_PLC_NC.Add(TplEintrag);
+                                }
+                                else
+                                {
+                                    // nur PLC und sonst nichts
+                                    Tuple<string, string, string> TplEintrag = new Tuple<string, string, string>(OrdnerName.Substring(StartBezeichnung), Sprache, OrdnerName);
+                                    TupleList_PLC.Add(TplEintrag);
+                                }
                             }
                         }
                     }
@@ -195,11 +208,13 @@ namespace TwinCAT_V3_Starter
             TupleList_PLC.Sort();
             TupleList_PLC_NC.Sort();
             TupleList_PLC_VISU.Sort();
+            TupleList_DigitalTwin.Sort();
             TupleList_BUG.Sort();
 
             TabMitInhaltFuellen(TupleList_PLC, StackPanel_PLC);
             TabMitInhaltFuellen(TupleList_PLC_NC, StackPanel_PLC_NC);
             TabMitInhaltFuellen(TupleList_PLC_VISU, StackPanel_PLC_VISU);
+            TabMitInhaltFuellen(TupleList_DigitalTwin, StackPanel_DigitalTwin);
             TabMitInhaltFuellen(TupleList_BUG, StackPanel_BUG);
 
             AnzeigeAktualisieren = true;
@@ -250,16 +265,22 @@ namespace TwinCAT_V3_Starter
             Web_PLC.NavigateToString(LeereHtmlSeite);
             Web_PLC_VISU.NavigateToString(LeereHtmlSeite);
             Web_PLC_NC.NavigateToString(LeereHtmlSeite);
+            Web_DigitalTwin.NavigateToString(LeereHtmlSeite);
             Web_BUG.NavigateToString(LeereHtmlSeite);
 
             if (rb.Name.Contains("PLC"))
             {
-                if (rb.Name.Contains("VISU"))
-                    Web_PLC_VISU.NavigateToString(HtmlSeite);
+                if (rb.Name.Contains("DT"))
+                    Web_DigitalTwin.NavigateToString(HtmlSeite);
                 else
                 {
-                    if (rb.Name.Contains("NC")) Web_PLC_NC.NavigateToString(HtmlSeite);
-                    else Web_PLC.NavigateToString(HtmlSeite);
+                    if (rb.Name.Contains("VISU"))
+                        Web_PLC_VISU.NavigateToString(HtmlSeite);
+                    else
+                    {
+                        if (rb.Name.Contains("NC")) Web_PLC_NC.NavigateToString(HtmlSeite);
+                        else Web_PLC.NavigateToString(HtmlSeite);
+                    }
                 }
             }
             else
@@ -357,6 +378,7 @@ namespace TwinCAT_V3_Starter
             Web_PLC.NavigateToString(LeereHtmlSeite);
             Web_PLC_VISU.NavigateToString(LeereHtmlSeite);
             Web_PLC_NC.NavigateToString(LeereHtmlSeite);
+            Web_DigitalTwin.NavigateToString(LeereHtmlSeite);
             Web_BUG.NavigateToString(LeereHtmlSeite);
         }
 
