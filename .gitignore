@@ -316,4 +316,10 @@ OpenCover/
 
 # Azure Stream Analytics local run output 
 ASALocalRun/
-*.bak
+TwinCAT_V3_Starter/MainWindow.xaml.bak
+TwinCAT_V3_Starter/bin/Debug/Projekte/TwinCAT_V3_PLC_VISU_DT_ST_Taschenrechner/index.html
+TwinCAT_V3_Starter/bin/Debug/Projekte/TwinCAT_V3_PLC_VISU_DT_ST_Taschenrechner/start.cmd
+TwinCAT_V3_Starter/bin/Debug/Projekte/TwinCAT_V3_PLC_VISU_ST_Taschenrechner/index.html
+TwinCAT_V3_Starter/bin/Debug/Projekte/TwinCAT_V3_PLC_VISU_ST_Taschenrechner/start.cmd
+TwinCAT_V3_Starter/bin/Debug/Projekte/TwinCAT_V3_PLC_VISU_ST_Taschenrechner/index.html
+TwinCAT_V3_Starter/bin/Debug/Projekte/TwinCAT_V3_PLC_VISU_ST_Taschenrechner/start.cmd
